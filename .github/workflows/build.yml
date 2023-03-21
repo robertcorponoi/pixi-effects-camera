@@ -1,0 +1,22 @@
+on: [pull_request]
+
+name: CI
+
+jobs:
+    build:
+        name: Build App
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            # GitHub action for Node.JS.
+            # https://github.com/actions/setup-node
+            - uses: actions/setup-node@v2
+              with:
+                  node-version: "16.13.2"
+                  check-latest: true
+            # Run `npm ci` to install dependencies.
+            - name: Install dependencies
+              run: npm ci
+            # Lastly create the Rollup bundle.
+            - name: Create the Rollup bundle
+              run: npm run bundle

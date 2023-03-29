@@ -13,14 +13,16 @@
         "node": ">=14.16"
     },
     "scripts": {
-        "bundle": "rollup -c rollup.config.js",
-        "bundle:watch": "rollup -c rollup.config.js --watch",
-        "generate-types": "tsc -d",
+        "build": "rollup -c rollup.config.js",
+        "build:watch": "rollup -c rollup.config.js --watch",
+        "prepare": "if [ ! -d 'dist' ]; then npm run build; fi",
+        "pretest": "npm run build",
         "test": "jest"
     },
     "files": [
         "/dist",
-        "/src"
+        "README.md",
+        "LICENSE"
     ],
     "author": "Robert Corponoi",
     "license": "MIT",

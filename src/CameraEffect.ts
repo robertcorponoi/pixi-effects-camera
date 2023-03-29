@@ -1,6 +1,6 @@
 import type { Container } from "@pixi/display";
 
-import { CameraEffectOptions } from "./models/CameraEffectOptions";
+import { CameraEffectOptions } from "./models/CameraEffectOptions.js";
 
 /**
  * Defines the structure of the `CameraEffect` abstract class.

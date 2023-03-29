@@ -1,4 +1,4 @@
-import Effect from "./CameraEffect";
+import Effect from "./CameraEffect.js";
 
 /**
  * A camera that keeps track of the effects added to it.

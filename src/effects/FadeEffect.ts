@@ -1,8 +1,8 @@
 import type { Sprite } from "@pixi/sprite";
 import type { Container } from "@pixi/display";
 
-import CameraEffect from "../CameraEffect";
-import { CameraEffectOptions } from "../models/CameraEffectOptions";
+import CameraEffect from "../CameraEffect.js";
+import { CameraEffectOptions } from "../models/CameraEffectOptions.js";
 
 /**
  * Fades the camera to the specified color.

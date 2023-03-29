@@ -14,9 +14,9 @@ jobs:
               with:
                   node-version: "16.13.2"
                   check-latest: true
-            # Run `npm ci` to install dependencies.
             - name: Install dependencies
               run: npm ci
-            # Lastly create the Rollup bundle.
             - name: Create the Rollup bundle
               run: npm run build
+            - name: Run tests
+              run: npm run test

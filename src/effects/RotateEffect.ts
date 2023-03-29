@@ -1,9 +1,9 @@
 import type { Container } from "@pixi/display";
 
-import CameraEffect from "../CameraEffect";
+import CameraEffect from "../CameraEffect.js";
 
-import { Vector2 } from "../models/Vector2";
-import { CameraEffectOptions } from "../models/CameraEffectOptions";
+import { Vector2 } from "../models/Vector2.js";
+import { CameraEffectOptions } from "../models/CameraEffectOptions.js";
 
 /**
  * Rotates the container to a specified angle, in degrees, over a specified

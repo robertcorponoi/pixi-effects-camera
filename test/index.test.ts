@@ -10,19 +10,33 @@ import {
     ZoomEffect,
 } from "../src/index";
 
+let app: PIXI.Application;
+let camera: Camera;
+
 let clock: sinon.SinonFakeTimers;
+
+const ticker = PIXI.Ticker.shared;
+ticker.autoStart = false;
+ticker.stop();
+
+beforeEach(() => {
+    app = new PIXI.Application({ sharedTicker: true });
+    clock = sinon.useFakeTimers();
+    camera = new Camera();
+});
+
+afterEach(() => {
+    clock.restore();
+    ticker.stop();
+});
 
 describe("Running effects", () => {
     test("creating the camera with no effects", () => {
-        const camera = new Camera();
         expect(camera.effects.length).toBe(0);
     });
 });
 
 describe("Running effects", () => {
-    beforeEach(() => (clock = sinon.useFakeTimers()));
-    afterEach(() => clock.restore());
-
     it("should set the started and last ran timestamps on the effect once the effect is run", () => {
         const app = new PIXI.Application();
 
@@ -30,7 +44,11 @@ describe("Running effects", () => {
         const shakeEffect = new ShakeEffect(app.stage, { duration: 10000 }, 5);
         camera.addEffect(shakeEffect);
 
-        app.ticker.add((delta) => camera.update(delta));
+        ticker.add((delta) => {
+            camera.update(delta);
+            app.renderer.render(app.stage);
+        });
+        ticker.start();
 
         clock.tick(2000);
 
@@ -45,7 +63,11 @@ describe("Running effects", () => {
         const shakeEffect = new ShakeEffect(app.stage, { duration: 10000 }, 5);
         camera.addEffect(shakeEffect);
 
-        app.ticker.add((delta) => camera.update(delta));
+        ticker.add((delta) => {
+            camera.update(delta);
+            app.renderer.render(app.stage);
+        });
+        ticker.start();
 
         clock.tick(2000);
 
@@ -59,7 +81,11 @@ describe("Running effects", () => {
         const shakeEffect = new ShakeEffect(app.stage, { duration: 2000 }, 5);
         camera.addEffect(shakeEffect);
 
-        app.ticker.add((delta) => camera.update(delta));
+        ticker.add((delta) => {
+            camera.update(delta);
+            app.renderer.render(app.stage);
+        });
+        ticker.start();
 
         clock.tick(3000);
 
@@ -79,10 +105,12 @@ describe("Running effects", () => {
         );
         camera.addEffect(shakeEffect);
 
-        app.ticker.add((delta) => {
+        ticker.add((delta) => {
             camera.update(delta);
+            app.renderer.render(app.stage);
             i++;
         });
+        ticker.start();
 
         clock.tick(3000);
 
@@ -91,9 +119,6 @@ describe("Running effects", () => {
 });
 
 describe("Shake effect", () => {
-    beforeEach(() => (clock = sinon.useFakeTimers()));
-    afterEach(() => clock.restore());
-
     it("should reset the pivot of the container when the shake effect ends", () => {
         const app = new PIXI.Application();
 
@@ -104,7 +129,11 @@ describe("Shake effect", () => {
         const shakeEffect = new ShakeEffect(app.stage, { duration: 2000 }, 5);
         camera.addEffect(shakeEffect);
 
-        app.ticker.add((delta) => camera.update(delta));
+        ticker.add((delta) => {
+            camera.update(delta);
+            app.renderer.render(app.stage);
+        });
+        ticker.start();
 
         clock.tick(3000);
 
@@ -114,9 +143,6 @@ describe("Shake effect", () => {
 });
 
 describe("Fade effect", () => {
-    beforeEach(() => (clock = sinon.useFakeTimers()));
-    afterEach(() => clock.restore());
-
     it("should fade the camera to black over the duration of the effect", () => {
         const app = new PIXI.Application();
         const sprite = new PIXI.Sprite(PIXI.Texture.WHITE);
@@ -131,7 +157,11 @@ describe("Fade effect", () => {
         );
         camera.addEffect(fadeEffect);
 
-        app.ticker.add((delta) => camera.update(delta));
+        ticker.add((delta) => {
+            camera.update(delta);
+            app.renderer.render(app.stage);
+        });
+        ticker.start();
 
         clock.tick(1000);
         expect(sprite.alpha).toBeGreaterThan(0.4);
@@ -144,9 +174,6 @@ describe("Fade effect", () => {
 });
 
 describe("Pan effect", () => {
-    beforeEach(() => (clock = sinon.useFakeTimers()));
-    afterEach(() => clock.restore());
-
     it("should pan the camera to the specified location", () => {
         const app = new PIXI.Application();
 
@@ -158,7 +185,11 @@ describe("Pan effect", () => {
         );
         camera.addEffect(panEffect);
 
-        app.ticker.add((delta) => camera.update(delta));
+        ticker.add((delta) => {
+            camera.update(delta);
+            app.renderer.render(app.stage);
+        });
+        ticker.start();
 
         clock.tick(3000);
 
@@ -168,9 +199,6 @@ describe("Pan effect", () => {
 });
 
 describe("Rotate effect", () => {
-    beforeEach(() => (clock = sinon.useFakeTimers()));
-    afterEach(() => clock.restore());
-
     it("should rotate the camera by 45 degrees", () => {
         const app = new PIXI.Application();
 
@@ -182,7 +210,11 @@ describe("Rotate effect", () => {
         );
         camera.addEffect(rotateEffect);
 
-        app.ticker.add((delta) => camera.update(delta));
+        ticker.add((delta) => {
+            camera.update(delta);
+            app.renderer.render(app.stage);
+        });
+        ticker.start();
 
         clock.tick(3000);
 
@@ -192,13 +224,7 @@ describe("Rotate effect", () => {
 });
 
 describe("Zoom effect", () => {
-    beforeEach(() => (clock = sinon.useFakeTimers()));
-    afterEach(() => clock.restore());
-
     it("should zoom in on the specified location", () => {
-        const app = new PIXI.Application();
-
-        const camera = new Camera();
         const zoomEffect = new ZoomEffect(
             app.stage,
             { duration: 2000 },
@@ -206,7 +232,11 @@ describe("Zoom effect", () => {
         );
         camera.addEffect(zoomEffect);
 
-        app.ticker.add((delta) => camera.update(delta));
+        ticker.add((delta) => {
+            camera.update(delta);
+            app.renderer.render(app.stage);
+        });
+        ticker.start();
 
         clock.tick(3000);
 
